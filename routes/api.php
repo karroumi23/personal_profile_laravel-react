@@ -21,9 +21,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-// Route::apiResource('/pages',pageController::class);
+Route::apiResource('/pages',pageController::class);
 
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('/pages', pageController::class);
-});
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::apiResource('/pages', pageController::class);
+// });
