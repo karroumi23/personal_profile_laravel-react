@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";  
 
 export default function Login()
@@ -7,7 +8,14 @@ export default function Login()
                                                  //At the beginning: email = '' .
                                                  //If you later call: setTitle('New email@..');  ==> email = 'New email@..'.
     const handleLogin = () => {
-         console.log("Email : " , email , " Password : " , password)
+         //console.log("Email : " , email , " Password : " , password)
+         axios.post('http://127.0.0.1:8000/api/login',{
+                     email:email,
+                     password:password
+           }).then((response)=>{
+                  console.log(response.data);
+           }).catch((error)=> console.error(error));
+                 
     }
 
      return(
