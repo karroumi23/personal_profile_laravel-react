@@ -1,6 +1,8 @@
 import axios from "axios";
-import React, { useState } from "react";  
-
+import React, { useState } from "react"; 
+import {Button} from '@mui/material';
+import {TextField } from '@mui/material'
+ 
 export default function Login()
 {
     const [email,setEmail] = useState('');       //email → the current value of the state 
@@ -19,14 +21,16 @@ export default function Login()
     }
 
      return(
-        <div>
-             <label className="email-field"> Email : </label>
-             <input type="email" id="email" name="email" onChange={(e) => setEmail(e.target.value)} />
+        <div> 
+             {/* input & libel from Material */}
+             <TextField variant="standard" label="Email :" type="email" id="email" name="email" onChange={(e) => setEmail(e.target.value)} />
              <br/>
-             <label className="password-field"> Password : </label>
-             <input type="password" id="password" name="password" onChange={(e) => setPassword(e.target.value)} />
-
-             <button onClick={handleLogin}> Login</button>
+             <TextField variant="standard" label="Password :" type="password" id="password" name="password" onChange={(e) => setPassword(e.target.value)} />
+             <br/>
+             <br/>
+             <Button variant="contained"  onClick={handleLogin}> Login </Button>
+             
+             
         </div>
      )
      
