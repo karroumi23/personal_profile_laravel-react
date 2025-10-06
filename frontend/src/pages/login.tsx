@@ -2,9 +2,11 @@ import axios from "axios";
 import React, { useState } from "react"; 
 import {Button} from '@mui/material';
 import {TextField } from '@mui/material'
+import {  useNavigate } from "react-router-dom";
  
 export default function Login()
-{
+{   
+     const navigate = useNavigate();             //Redirection  
     const [email,setEmail] = useState('');       //email → the current value of the state 
     const [password,setPassword] = useState(''); //setEmail → a function to update that value.
                                                  //At the beginning: email = '' .
@@ -16,7 +18,11 @@ export default function Login()
                      password:password
            }).then((response)=>{
                   console.log(response.data);
-           }).catch((error)=> console.error(error));
+                  navigate('/Dashboard') ;  //Redirection 
+           }).catch((error) => {
+               console.error(error);
+               alert("Login failed! Please check your email or password."); // ⚠️ Alert when login fails
+             });
                  
     }
 
