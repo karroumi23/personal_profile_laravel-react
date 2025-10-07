@@ -14,9 +14,9 @@ class pageController extends Controller
     {
         $pages = page::all();
         if (count($pages) > 0) { //if there is data
-            return response()->json(['data' => $pages, //get data  //[...] JSON body
-                                     'message' => 'all pages' // and send this msg
-                                    ])->setStatusCode(200);
+            return response()->json(['data' => $pages,        //get data  //[...] JSON body
+                                     'message' => 'all pages' //and send this msg
+                                    ])->setStatusCode(200);   //http Status
         }else{
              return response()->json(['data'=>[], //empty data
                                       'message' => 'no pages found yet'
