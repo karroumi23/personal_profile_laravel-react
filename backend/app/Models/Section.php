@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\SectionType;
+use App\Enums\SectionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,8 +24,14 @@ class Section extends Model
     // Define relationship: one Section has many SectionFields
     public function fields()
     {
-        // Links to the SectionField model using section_id foreign key
-        // Allows: $section->fields to get all related fields
         return $this->hasMany(SectionField::class);
     }
+
+    public function pages()
+    {
+        return $this->belongsToMany(page::class);
+    }
+
+
+
 }

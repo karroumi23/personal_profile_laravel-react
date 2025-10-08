@@ -3,8 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Enums\SectionType;
-
 
 return new class extends Migration
 {
@@ -13,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sections', function (Blueprint $table) {
+        Schema::create('page_sections', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            // Enum column based on SectionType enum values
-            $table->enum('type', array_column(SectionType::cases(), 'value'));
-            $table->integer('order');
+            $table->foreignId('page_id')->constrained('pages');
+            $table->foreignId('section_id')->constrained('sections');
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sections');
+        Schema::dropIfExists('page_sections');
     }
 };

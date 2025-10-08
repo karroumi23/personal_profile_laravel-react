@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class page extends Model
 {
+    
     use HasFactory;
 
     protected $fillable = [
@@ -14,5 +15,11 @@ class page extends Model
         'slug',
         'is_published',
     ];
+
+    //One Page can have many Sections,and one Section can belong to many Pages.
+    public function sections()
+    {
+        return $this->belongsToMany(Section::class);
+    }
 
 }

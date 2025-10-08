@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Enums;
 
 enum SectionType: string
 {
@@ -9,5 +9,4 @@ enum SectionType: string
     case SERVICES = 'services';
     case PORTFOLIO = 'portfolio';
     case TESTIMONIALS = 'testimonials';
-
 }
