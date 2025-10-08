@@ -12,7 +12,7 @@ class pageController extends Controller
      */
     public function index()
     {
-        $pages = page::all();
+        $pages = page::with('sections')->get(); //When you get all pages, also load the related sections from the sections table
         if (count($pages) > 0) { //if there is data
             return response()->json(['data' => $pages,        //get data  //[...] JSON body
                                      'message' => 'all pages' //and send this msg
@@ -38,6 +38,11 @@ class pageController extends Controller
 
         $page = page::create($data);
 
+        if($request->has('sections')){ //Check if the request contains the sections field
+             $page->sections()->attach($request->sections);//Create relationships between the new page and existing section IDs
+                                                            //'attach'=> just adds new relationships (but keeps old ones).
+        }
+
         if ($page) {
             return response()->json(['data'=>$page,
                                      'message'=>'page created successfly'
@@ -54,7 +59,8 @@ class pageController extends Controller
      */
     public function show(string $slug)
     {
-       $page = page::where('slug',$slug)->first(); //where : 'slug'= $slug (like where id ...)
+       $page = page::with('sections')->where('slug',$slug)->first(); //where : 'slug'= $slug (like where id ...) / page with there sections
+
        if ($page) {
         return response()->json(['data'=>$page,
                                  'message'=>'page found'
@@ -80,6 +86,11 @@ class pageController extends Controller
                         'slug' => $request->input('slug'),
                         'is_published' => $request->input('is_published'),
         ]);
+
+        if ($request->has('sections')) { //This checks if request (from your frontend or Postman) includes a field called 'sections'.
+            $page->sections()->sync($request->sections); //sync() ➜ replaces the old relationships with the new ones you pass in.
+        }
+
         if ($is_updated) {
             return response()->json(['data' => $page,'message' =>'page Updated'])->setStatusCode(200);
         }else{
