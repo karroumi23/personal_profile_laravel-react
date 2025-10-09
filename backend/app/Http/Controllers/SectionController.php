@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SectionController extends Controller
 {
@@ -12,15 +13,8 @@ class SectionController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+       $sections = Section::all();
+        return response()->json(['data'=>$sections,'maessage'=>'all sections']);
     }
 
     /**
@@ -28,29 +22,41 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //validate the request
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'type' => 'required|string',
+            'order' => 'required|integer', //integer : number
+        ]);
+
+        // if validate fails
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->error()],400);
+        }
+
+        $section =Section::create($request->all());
+
+        return response()->json(['data'=> $section, 'message'=>'Section created successfully']);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Section $section)
+    public function show(string $id)
     {
-        //
-    }
+        $section = Section::find($id);
+        if (!$section) {
+            return response()->json(['error'=>'section not found'],404);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Section $section)
-    {
-        //
+        return response()->json(['data'=>$section,'message'=> 'section retrieved successfully']);
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Section $section)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +64,7 @@ class SectionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Section $section)
+    public function destroy(string $id)
     {
         //
     }
