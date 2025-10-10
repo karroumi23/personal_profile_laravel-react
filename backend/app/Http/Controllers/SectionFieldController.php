@@ -12,54 +12,80 @@ class SectionFieldController extends Controller
      */
     public function index()
     {
-        //
+        $sectionfields = SectionField::all();
+        return response()->json(['data'=>$sectionfields,'message'=>'All sections fields ']);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'section_id'=>'required|integer|exists:section,id',
+            'field_name'=>'required|string',
+            'field_value'=>'required|string',
+
+        ]);
+
+        if (!$data) {
+            return response()->json(['error' => 'Invalid data'],400);
+        }
+
+        $sectionFields = SectionField::create($data);
+        return response()->json(['data'=>$sectionFields,'message'=>' Sections fields created successfully  ']);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(SectionField $sectionField)
+    public function show(string $id)
     {
-        //
+        $sectionField = SectionField::find($id);
+        if (!$sectionField) {
+            return response()->json(['message'=>'Section field not found'],404);
+
+        }
+        return response()->json(['data'=>$sectionField,'message'=>'retrieved successfully']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(SectionField $sectionField)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SectionField $sectionField)
+    public function update(Request $request, string $id)
     {
-        //
+        $sectionField = SectionField::find($id);
+        if (!$sectionField) {
+            return response()->json(['message'=>'Section field not found'],404);
+        }
+        $data = $request->validate([
+            'section_id'=>'required|integer|exists:section,id',
+            'field_name'=>'required|string',
+            'field_value'=>'required|string',
+        ]);
+
+        if (!$data) {
+            return response()->json(['message'=> 'invalid data'],400);
+        }
+
+        $sectionField->update($data);
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SectionField $sectionField)
+    public function destroy( string $id)
     {
-        //
+        $sectionField = SectionField::find($id);
+        if (!$sectionField) {
+            return response()->json(['message'=>'Section field not found'],404);
+        }
+
+        $sectionField->delete();
+        return response()->json(['message'=>'Section field deleted successfully']);
+
     }
 }

@@ -11,7 +11,7 @@ class SectionField extends Model
     protected $fillable = [
          'section_id',
          'field_name',
-         'field_name',
+         'field_value',
     ];
 
     //This defines an inverse relationship — it tells Laravel that:
